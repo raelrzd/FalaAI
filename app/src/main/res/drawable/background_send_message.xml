@@ -1,0 +1,24 @@
+<!-- res/drawable/chat_balloon_background_received.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#10A37F" />
+            <corners android:topLeftRadius="16dp"
+            android:bottomLeftRadius="16dp"
+            android:bottomRightRadius="16dp" />
+        </shape>
+    </item>
+    <item
+        android:left="40dp"
+        android:top="16dp">
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="20%"
+            android:pivotY="87.5%">
+            <shape android:shape="rectangle">
+                <solid android:color="#10A37F" />
+                <corners android:radius="4dp" />
+            </shape>
+        </rotate>
+    </item>
+</layer-list>
