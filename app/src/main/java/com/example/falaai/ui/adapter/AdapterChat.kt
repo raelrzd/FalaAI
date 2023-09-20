@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
-import com.aallam.openai.api.chat.ChatMessage
-import com.aallam.openai.api.chat.ChatRole
 import com.example.falaai.R
+import com.example.falaai.constants.Constants.Companion.KEY_USER
 import com.example.falaai.databinding.ItemMessageBinding
+import com.example.falaai.model.ModelMessage
 
 class AdapterChat(
     private val context: Context,
-    private var chatList: MutableList<ChatMessage>
+    private var chatList: MutableList<ModelMessage>
 ) : RecyclerView.Adapter<AdapterChat.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,7 +29,7 @@ class AdapterChat(
         return chatList.size
     }
 
-    fun addMessage(chatMessage: ChatMessage) {
+    fun addMessage(chatMessage: ModelMessage) {
         chatList.add(chatMessage)
         notifyDataSetChanged()
     }
@@ -43,8 +43,8 @@ class AdapterChat(
         private val messageView = binding.messageText
 
 
-        fun bindView(message: ChatMessage) {
-            if (message.role == ChatRole.User) {
+        fun bindView(message: ModelMessage) {
+            if (message.role == KEY_USER) {
                 setLayoutMessage(R.drawable.background_send_message, isSend = true)
             } else {
                 setLayoutMessage(R.drawable.background_receive_message, isSend = false)

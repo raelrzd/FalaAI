@@ -6,36 +6,33 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.aallam.openai.api.chat.ChatCompletion
-import com.aallam.openai.api.chat.ChatCompletionRequest
-import com.aallam.openai.api.chat.ChatMessage
-import com.aallam.openai.api.chat.ChatRole
-import com.aallam.openai.api.http.Timeout
-import com.aallam.openai.api.model.ModelId
-import com.aallam.openai.client.OpenAI
-import com.example.falaai.MyApplication
-import com.example.falaai.constant.Constants.Companion.KEY_OPEN_CHAT
+import com.example.falaai.constants.Constants.Companion.KEY_ASSISTANT
+import com.example.falaai.constants.Constants.Companion.KEY_OPEN_CHAT
+import com.example.falaai.constants.Constants.Companion.KEY_USER
 import com.example.falaai.databinding.ActivityChatBinding
 import com.example.falaai.model.ModelChat
+import com.example.falaai.model.ModelMessage
 import com.example.falaai.storage.ChatStorage
 import com.example.falaai.ui.adapter.AdapterChat
+import com.example.falaai.webclient.RetrofitLauncher
+import com.example.falaai.webclient.model.ChatRequest
+import com.example.falaai.webclient.model.ChatResponse
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.seconds
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 private const val MODEL_CHAT_REQUEST = "gpt-3.5-turbo"
 
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChatBinding
-    private val openAIService by lazy {
-        MyApplication.instance.getOpenAIService()
-    }
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdapterChat
-    private var chat: ModelChat? = null
-
+    private var chat: ModelChat = ModelChat()
+    private val chatService = RetrofitLauncher().chatService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +41,7 @@ class ChatActivity : AppCompatActivity() {
         setContentView(view)
         setupIntent()
         recyclerView = binding.recyclerChat
-        adapter = AdapterChat(this, chat?.chat ?: mutableListOf())
+        adapter = AdapterChat(this, chat.chat)
         recyclerView.adapter = adapter
 
 
@@ -59,52 +56,87 @@ class ChatActivity : AppCompatActivity() {
     private fun setupButtonSendMessage() {
         binding.outlinedTextField.setEndIconOnClickListener {
             val inputText = binding.outlinedTextField.editText?.text.toString()
-            val newMessage = ChatMessage(
-                role = ChatRole.User,
+            val newMessage = ModelMessage(
+                role = KEY_USER,
                 content = inputText
             )
             adapter.addMessage(newMessage)
             lifecycleScope.launch {
-                if (chat != null) {
-                    chat!!.chat.add(newMessage)
-                    val chatCompletionRequest = ChatCompletionRequest(
-                        model = ModelId(MODEL_CHAT_REQUEST),
-                        messages = chat!!.chat
+                ChatStorage(this@ChatActivity).getItem(chat)?.let {
+                    chat.chat.add(newMessage)
+                    val chatCompletionRequest = ChatRequest(
+                        messages = chat.chat
                     )
-                    openAIService.chatCompletion(chatCompletionRequest).let { chatCompletion ->
-                        Log.i(
-                            "raeldev",
-                            "onCreate: ${chatCompletion.choices[0].message.content.toString()}"
-                        )
-                        val responseMessage = ChatMessage(
-                            role = ChatRole.Assistant,
-                            content = chatCompletion.choices[0].message.content.toString()
-                        )
-                        chat!!.chat.add(responseMessage)
-                        adapter.addMessage(responseMessage)
-                    }
-                    ChatStorage(this@ChatActivity).updateItem(chat!!)
-                } else {
+                    val call = chatService.sendMessage(chatCompletionRequest)
+                    call.enqueue(object : Callback<ChatResponse> {
+
+                        override fun onResponse(
+                            call: Call<ChatResponse>,
+                            response: Response<ChatResponse>,
+                        ) {
+                            if (response.isSuccessful) {
+                                val chatResponse = response.body()
+                                Log.i(
+                                    "raeldev",
+                                    "onResponse: ${chatResponse?.choices?.get(0)?.message?.content.toString()}"
+                                )
+                                val responseMessage = ModelMessage(
+                                    role = KEY_ASSISTANT,
+                                    content = chatResponse?.choices?.get(0)?.message?.content.toString()
+                                )
+                                chat.chat.add(responseMessage)
+                                adapter.addMessage(responseMessage)
+                            } else {
+                                val errorBody = response.errorBody()?.string()
+                                Log.i("raeldev", "onResponse: erro $errorBody")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ChatResponse>, t: Throwable) {
+                            Log.i("raeldev", "onFailure: falhaa")
+                        }
+
+                    })
+                    ChatStorage(this@ChatActivity).updateItem(chat)
+                } ?: run {
                     chat = ModelChat(chat = mutableListOf(newMessage))
-                    val chatCompletionRequest = ChatCompletionRequest(
-                        model = ModelId(MODEL_CHAT_REQUEST),
+                    val chatCompletionRequest = ChatRequest(
                         messages = listOf(
                             newMessage
                         )
                     )
-                    openAIService.chatCompletion(chatCompletionRequest).let { chatCompletion ->
-                        chatCompletion.choices[0].message
-                        Log.i(
-                            "raeldev",
-                            "onCreate: ${chatCompletion.choices[0].message.content.toString()}"
-                        )
-                        val responseMessage = ChatMessage(
-                            ChatRole.Assistant,
-                            content = chatCompletion.choices[0].message.content.toString()
-                        )
-                        chat!!.chat.add(responseMessage)
-                        adapter.addMessage(responseMessage)
-                    }
+                    val call = chatService.sendMessage(chatCompletionRequest)
+                    call.enqueue(object : Callback<ChatResponse> {
+
+                        override fun onResponse(
+                            call: Call<ChatResponse>,
+                            response: Response<ChatResponse>,
+                        ) {
+                            if (response.isSuccessful) {
+                                val chatResponse = response.body()
+                                Log.i(
+                                    "raeldev",
+                                    "onCreate: ${chatResponse?.choices?.get(0)?.message?.content.toString()}"
+                                )
+                                val responseMessage = ModelMessage(
+                                    role = KEY_ASSISTANT,
+                                    content = chatResponse?.choices?.get(0)?.message?.content.toString()
+                                )
+                                chat!!.chat.add(responseMessage)
+                                adapter.addMessage(responseMessage)
+                            } else {
+                                val errorBody = response.errorBody()?.string()
+                                Log.i("raeldev", "onResponse: erro $errorBody")
+                                // Trate erros aqui
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ChatResponse>, t: Throwable) {
+                            // Trate falhas na chamada aqui
+                            Log.i("raeldev", "onFailure: falhaa")
+                        }
+
+                    })
                     ChatStorage(this@ChatActivity).addItem(chat!!)
                 }
             }
