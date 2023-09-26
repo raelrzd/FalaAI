@@ -24,7 +24,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-private const val MODEL_CHAT_REQUEST = "gpt-3.5-turbo"
 
 class ChatActivity : AppCompatActivity() {
 
@@ -76,6 +75,7 @@ class ChatActivity : AppCompatActivity() {
                         ) {
                             if (response.isSuccessful) {
                                 val chatResponse = response.body()
+                                Log.i("raeldev", "onResponse: $chatResponse")
                                 Log.i(
                                     "raeldev",
                                     "onResponse: ${chatResponse?.choices?.get(0)?.message?.content.toString()}"
@@ -86,6 +86,7 @@ class ChatActivity : AppCompatActivity() {
                                 )
                                 chat.chat.add(responseMessage)
                                 adapter.addMessage(responseMessage)
+                                ChatStorage(this@ChatActivity).updateItem(chat)
                             } else {
                                 val errorBody = response.errorBody()?.string()
                                 Log.i("raeldev", "onResponse: erro $errorBody")
@@ -97,7 +98,6 @@ class ChatActivity : AppCompatActivity() {
                         }
 
                     })
-                    ChatStorage(this@ChatActivity).updateItem(chat)
                 } ?: run {
                     chat = ModelChat(chat = mutableListOf(newMessage))
                     val chatCompletionRequest = ChatRequest(
@@ -114,6 +114,7 @@ class ChatActivity : AppCompatActivity() {
                         ) {
                             if (response.isSuccessful) {
                                 val chatResponse = response.body()
+                                Log.i("raeldev", "onResponse: $chatResponse")
                                 Log.i(
                                     "raeldev",
                                     "onCreate: ${chatResponse?.choices?.get(0)?.message?.content.toString()}"
@@ -122,8 +123,9 @@ class ChatActivity : AppCompatActivity() {
                                     role = KEY_ASSISTANT,
                                     content = chatResponse?.choices?.get(0)?.message?.content.toString()
                                 )
-                                chat!!.chat.add(responseMessage)
+                                chat.chat.add(responseMessage)
                                 adapter.addMessage(responseMessage)
+                                ChatStorage(this@ChatActivity).addItem(chat)
                             } else {
                                 val errorBody = response.errorBody()?.string()
                                 Log.i("raeldev", "onResponse: erro $errorBody")
@@ -137,7 +139,7 @@ class ChatActivity : AppCompatActivity() {
                         }
 
                     })
-                    ChatStorage(this@ChatActivity).addItem(chat!!)
+
                 }
             }
         }
@@ -146,8 +148,12 @@ class ChatActivity : AppCompatActivity() {
     private fun setupIntent() {
         intent?.let { intent ->
             if (intent.hasExtra(KEY_OPEN_CHAT)) {
-                val jsonChat = intent.getStringExtra(KEY_OPEN_CHAT)
-                chat = Gson().fromJson(jsonChat, object : TypeToken<ModelChat>() {}.type)
+                val modelChat = intent.getSerializableExtra(KEY_OPEN_CHAT) as? ModelChat
+                if (modelChat != null) {
+                    chat = modelChat
+                } else {
+                    // Trate o caso em que o objeto é nulo
+                }
             }
         }
     }

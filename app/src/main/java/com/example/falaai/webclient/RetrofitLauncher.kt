@@ -9,7 +9,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class RetrofitLauncher {
 
     private val client by lazy {
-        val yourAccessToken = "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"
+        val yourAccessToken = "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"
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         OkHttpClient.Builder()

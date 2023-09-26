@@ -13,7 +13,7 @@ import com.example.falaai.model.ModelMessage
 
 class AdapterChat(
     private val context: Context,
-    private var chatList: MutableList<ModelMessage>
+    private var messageList: MutableList<ModelMessage>
 ) : RecyclerView.Adapter<AdapterChat.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,15 +22,15 @@ class AdapterChat(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindView(chatList[position])
+        holder.bindView(messageList[position])
     }
 
     override fun getItemCount(): Int {
-        return chatList.size
+        return messageList.size
     }
 
     fun addMessage(chatMessage: ModelMessage) {
-        chatList.add(chatMessage)
+        messageList.add(chatMessage)
         notifyDataSetChanged()
     }
 
