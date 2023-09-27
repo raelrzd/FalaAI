@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/black</item>
         <item name="colorOnSurface">@color/black</item>
         <item name="colorError">#FF0000</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
         <item name="textAppearanceBodySmall">@style/TextAppearance.App.BodySmall</item>
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>

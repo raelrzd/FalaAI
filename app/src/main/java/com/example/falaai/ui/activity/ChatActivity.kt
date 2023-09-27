@@ -2,8 +2,12 @@ package com.example.falaai.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.falaai.constants.Constants.Companion.KEY_ASSISTANT
@@ -46,6 +50,11 @@ class ChatActivity : AppCompatActivity() {
 
         setupButtonSendMessage()
 
+
+        binding.outlinedTextField.editText?.addTextChangedListener{
+            Toast.makeText(this, "texto alterado", Toast.LENGTH_SHORT).show()
+        }
+
         binding.chatBack.setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
         }
@@ -55,92 +64,96 @@ class ChatActivity : AppCompatActivity() {
     private fun setupButtonSendMessage() {
         binding.outlinedTextField.setEndIconOnClickListener {
             val inputText = binding.outlinedTextField.editText?.text.toString()
-            val newMessage = ModelMessage(
-                role = KEY_USER,
-                content = inputText
-            )
-            adapter.addMessage(newMessage)
-            lifecycleScope.launch {
-                ChatStorage(this@ChatActivity).getItem(chat)?.let {
-                    chat.chat.add(newMessage)
-                    val chatCompletionRequest = ChatRequest(
-                        messages = chat.chat
-                    )
-                    val call = chatService.sendMessage(chatCompletionRequest)
-                    call.enqueue(object : Callback<ChatResponse> {
-
-                        override fun onResponse(
-                            call: Call<ChatResponse>,
-                            response: Response<ChatResponse>,
-                        ) {
-                            if (response.isSuccessful) {
-                                val chatResponse = response.body()
-                                Log.i("raeldev", "onResponse: $chatResponse")
-                                Log.i(
-                                    "raeldev",
-                                    "onResponse: ${chatResponse?.choices?.get(0)?.message?.content.toString()}"
-                                )
-                                val responseMessage = ModelMessage(
-                                    role = KEY_ASSISTANT,
-                                    content = chatResponse?.choices?.get(0)?.message?.content.toString()
-                                )
-                                chat.chat.add(responseMessage)
-                                adapter.addMessage(responseMessage)
-                                ChatStorage(this@ChatActivity).updateItem(chat)
-                            } else {
-                                val errorBody = response.errorBody()?.string()
-                                Log.i("raeldev", "onResponse: erro $errorBody")
-                            }
-                        }
-
-                        override fun onFailure(call: Call<ChatResponse>, t: Throwable) {
-                            Log.i("raeldev", "onFailure: falhaa")
-                        }
-
-                    })
-                } ?: run {
-                    chat = ModelChat(chat = mutableListOf(newMessage))
-                    val chatCompletionRequest = ChatRequest(
-                        messages = listOf(
-                            newMessage
+            if (inputText != "") {
+                val newMessage = ModelMessage(
+                    role = KEY_USER,
+                    content = inputText
+                )
+                adapter.addMessage(newMessage)
+                lifecycleScope.launch {
+                    ChatStorage(this@ChatActivity).getItem(chat)?.let {
+                        chat.chat.add(newMessage)
+                        val chatCompletionRequest = ChatRequest(
+                            messages = chat.chat
                         )
-                    )
-                    val call = chatService.sendMessage(chatCompletionRequest)
-                    call.enqueue(object : Callback<ChatResponse> {
+                        val call = chatService.sendMessage(chatCompletionRequest)
+                        call.enqueue(object : Callback<ChatResponse> {
 
-                        override fun onResponse(
-                            call: Call<ChatResponse>,
-                            response: Response<ChatResponse>,
-                        ) {
-                            if (response.isSuccessful) {
-                                val chatResponse = response.body()
-                                Log.i("raeldev", "onResponse: $chatResponse")
-                                Log.i(
-                                    "raeldev",
-                                    "onCreate: ${chatResponse?.choices?.get(0)?.message?.content.toString()}"
-                                )
-                                val responseMessage = ModelMessage(
-                                    role = KEY_ASSISTANT,
-                                    content = chatResponse?.choices?.get(0)?.message?.content.toString()
-                                )
-                                chat.chat.add(responseMessage)
-                                adapter.addMessage(responseMessage)
-                                ChatStorage(this@ChatActivity).addItem(chat)
-                            } else {
-                                val errorBody = response.errorBody()?.string()
-                                Log.i("raeldev", "onResponse: erro $errorBody")
-                                // Trate erros aqui
+                            override fun onResponse(
+                                call: Call<ChatResponse>,
+                                response: Response<ChatResponse>,
+                            ) {
+                                if (response.isSuccessful) {
+                                    val chatResponse = response.body()
+                                    Log.i("raeldev", "onResponse: $chatResponse")
+                                    Log.i(
+                                        "raeldev",
+                                        "onResponse: ${chatResponse?.choices?.get(0)?.message?.content.toString()}"
+                                    )
+                                    val responseMessage = ModelMessage(
+                                        role = KEY_ASSISTANT,
+                                        content = chatResponse?.choices?.get(0)?.message?.content.toString()
+                                    )
+                                    chat.chat.add(responseMessage)
+                                    adapter.addMessage(responseMessage)
+                                    ChatStorage(this@ChatActivity).updateItem(chat)
+                                } else {
+                                    val errorBody = response.errorBody()?.string()
+                                    Log.i("raeldev", "onResponse: erro $errorBody")
+                                }
                             }
-                        }
 
-                        override fun onFailure(call: Call<ChatResponse>, t: Throwable) {
-                            // Trate falhas na chamada aqui
-                            Log.i("raeldev", "onFailure: falhaa")
-                        }
+                            override fun onFailure(call: Call<ChatResponse>, t: Throwable) {
+                                Log.i("raeldev", "onFailure: falhaa")
+                            }
 
-                    })
+                        })
+                    } ?: run {
+                        chat = ModelChat(chat = mutableListOf(newMessage))
+                        val chatCompletionRequest = ChatRequest(
+                            messages = listOf(
+                                newMessage
+                            )
+                        )
+                        val call = chatService.sendMessage(chatCompletionRequest)
+                        call.enqueue(object : Callback<ChatResponse> {
 
+                            override fun onResponse(
+                                call: Call<ChatResponse>,
+                                response: Response<ChatResponse>,
+                            ) {
+                                if (response.isSuccessful) {
+                                    val chatResponse = response.body()
+                                    Log.i("raeldev", "onResponse: $chatResponse")
+                                    Log.i(
+                                        "raeldev",
+                                        "onCreate: ${chatResponse?.choices?.get(0)?.message?.content.toString()}"
+                                    )
+                                    val responseMessage = ModelMessage(
+                                        role = KEY_ASSISTANT,
+                                        content = chatResponse?.choices?.get(0)?.message?.content.toString()
+                                    )
+                                    chat.chat.add(responseMessage)
+                                    adapter.addMessage(responseMessage)
+                                    ChatStorage(this@ChatActivity).addItem(chat)
+                                } else {
+                                    val errorBody = response.errorBody()?.string()
+                                    Log.i("raeldev", "onResponse: erro $errorBody")
+                                    // Trate erros aqui
+                                }
+                            }
+
+                            override fun onFailure(call: Call<ChatResponse>, t: Throwable) {
+                                // Trate falhas na chamada aqui
+                                Log.i("raeldev", "onFailure: falhaa")
+                            }
+
+                        })
+
+                    }
                 }
+                binding.outlinedTextField.editText?.setText("")
+
             }
         }
     }
