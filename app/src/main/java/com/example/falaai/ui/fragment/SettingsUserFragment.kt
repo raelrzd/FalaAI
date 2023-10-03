@@ -1,12 +1,10 @@
 package com.example.falaai.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.falaai.R
-import com.example.falaai.databinding.FragmentHistoricChatBinding
+import androidx.fragment.app.Fragment
 import com.example.falaai.databinding.FragmentSettingsUserBinding
 
 class SettingsUserFragment : Fragment() {

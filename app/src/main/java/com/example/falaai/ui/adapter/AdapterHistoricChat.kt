@@ -9,7 +9,7 @@ import com.example.falaai.model.ModelChat
 
 class AdapterHistoricChat(
     private val context: Context,
-    private var chatList: MutableList<ModelChat>
+    private var chatList: MutableList<ModelChat>,
 ) : RecyclerView.Adapter<AdapterHistoricChat.ViewHolder>() {
     private var clickChat: ((tracked: ModelChat) -> Unit)? = null
 
@@ -39,7 +39,7 @@ class AdapterHistoricChat(
     inner class ViewHolder(
         private val context: Context,
         private var clickChat: ((tracked: ModelChat) -> Unit)? = null,
-        binding: ItemChatBinding
+        binding: ItemChatBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val itemChatView = binding.itemChatView
@@ -52,7 +52,7 @@ class AdapterHistoricChat(
             }
 
 
-            title.text = "Você: ${modelChat.chat[0].content}"
+            title.text = modelChat.chat[0].content
 
         }
 

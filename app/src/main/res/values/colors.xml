@@ -2,5 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="splashScreen">#94cd9a</color>
+    <color name="splashScreen">#97c6a2</color>
+    <color name="topBar">#10A37F</color>
+    <color name="backgroundDefault">#D3FBE8</color>
+    <color name="colorBackgroundPhoto">#000</color>
+    <color name="colorHeaderPhoto">#4000</color>
+    <color name="colorViewPhoto">#9000</color>
+    <color name="colorRemoveImage">#F85E67</color>
+    <color name="colorGallery">#7e57c2</color>
+    <color name="colorCamera">#11A4E2</color>
 </resources>

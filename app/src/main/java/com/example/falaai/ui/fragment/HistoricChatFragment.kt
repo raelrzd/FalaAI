@@ -2,12 +2,11 @@ package com.example.falaai.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.falaai.R
 import com.example.falaai.constants.Constants
 import com.example.falaai.databinding.FragmentHistoricChatBinding
 import com.example.falaai.storage.ChatStorage
@@ -27,7 +26,7 @@ class HistoricChatFragment : Fragment() {
         _binding = FragmentHistoricChatBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        adapterHistoric = AdapterHistoricChat(requireContext(), ChatStorage(requireContext()).getList())
+        updateAdapterList()
         recyclerView = binding.homeRecyclerChat
         recyclerView.adapter = adapterHistoric
 
@@ -42,5 +41,25 @@ class HistoricChatFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkEmptyList()
+    }
+
+    fun updateAdapterList() {
+        adapterHistoric =
+            AdapterHistoricChat(requireContext(), ChatStorage(requireContext()).getList())
+    }
+
+    private fun checkEmptyList() {
+        if (adapterHistoric.itemCount == 0) {
+            binding.homeLayoutEmptyList.visibility = View.VISIBLE
+            binding.homeRecyclerChat.visibility = View.GONE
+        } else {
+            binding.homeLayoutEmptyList.visibility = View.GONE
+            binding.homeRecyclerChat.visibility = View.VISIBLE
+        }
     }
 }

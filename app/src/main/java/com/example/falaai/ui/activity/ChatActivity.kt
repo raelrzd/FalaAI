@@ -1,11 +1,8 @@
 package com.example.falaai.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.widget.Toast
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -21,8 +18,6 @@ import com.example.falaai.ui.adapter.AdapterChat
 import com.example.falaai.webclient.RetrofitLauncher
 import com.example.falaai.webclient.model.ChatRequest
 import com.example.falaai.webclient.model.ChatResponse
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,7 +38,7 @@ class ChatActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         setupIntent()
-        recyclerView = binding.recyclerChat
+        recyclerView = binding.chatRecycler
         adapter = AdapterChat(this, chat.chat)
         recyclerView.adapter = adapter
 
@@ -51,14 +46,19 @@ class ChatActivity : AppCompatActivity() {
         setupButtonSendMessage()
 
 
-        binding.outlinedTextField.editText?.addTextChangedListener{
-            Toast.makeText(this, "texto alterado", Toast.LENGTH_SHORT).show()
+        binding.outlinedTextField.editText?.addTextChangedListener {
+//            Toast.makeText(this, "texto alterado", Toast.LENGTH_SHORT).show()
         }
 
-        binding.chatBack.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
+        binding.chatIconBack.setOnClickListener {
+            finish()
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkEmptyList()
     }
 
     private fun setupButtonSendMessage() {
@@ -145,7 +145,7 @@ class ChatActivity : AppCompatActivity() {
 
                             override fun onFailure(call: Call<ChatResponse>, t: Throwable) {
                                 // Trate falhas na chamada aqui
-                                Log.i("raeldev", "onFailure: falhaa")
+                                Log.i("raeldev", "onFailure: falhaa $t  ${call.isExecuted}")
                             }
 
                         })
@@ -153,8 +153,18 @@ class ChatActivity : AppCompatActivity() {
                     }
                 }
                 binding.outlinedTextField.editText?.setText("")
-
+                checkEmptyList()
             }
+        }
+    }
+
+    private fun checkEmptyList() {
+        if (adapter.itemCount == 0) {
+            binding.chatLayoutEmptyList.visibility = View.VISIBLE
+            binding.chatRecycler.visibility = View.GONE
+        } else {
+            binding.chatLayoutEmptyList.visibility = View.GONE
+            binding.chatRecycler.visibility = View.VISIBLE
         }
     }
 
@@ -165,6 +175,7 @@ class ChatActivity : AppCompatActivity() {
                 if (modelChat != null) {
                     chat = modelChat
                 } else {
+                    checkEmptyList()
                     // Trate o caso em que o objeto é nulo
                 }
             }

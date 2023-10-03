@@ -8,8 +8,8 @@
 
 <ImageView
     android:id="@+id/itemChatIcon"
-    android:layout_width="24dp"
-    android:layout_height="24dp"
+    android:layout_width="45dp"
+    android:layout_height="45dp"
     android:src="@drawable/ic_chat_list"
     android:layout_margin="24dp"
     app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         android:maxLines="1"
         android:layout_margin="16dp"
         android:ellipsize="end"
-        tools:text="Você: Sua mensagem primeira mensagem aqui"
+        tools:text="Sua mensagem primeira mensagem aqui"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/itemChatIcon"
         app:layout_constraintTop_toTopOf="parent"

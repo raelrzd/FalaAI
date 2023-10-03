@@ -1,7 +1,13 @@
 package com.example.falaai.ui.activity
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.os.Build
 import android.os.Bundle
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.doOnEnd
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import com.example.falaai.R
 import com.example.falaai.databinding.ActivityHomeBinding
@@ -17,13 +23,40 @@ class HomeActivity : AppCompatActivity() {
     private val settingsUserFragment = SettingsUserFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupAnimations()
         setupNavigationBar()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        historicChatFragment.updateAdapterList()
+    }
 
+    private fun setupAnimations() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            splashScreen.setOnExitAnimationListener { splashScreenView ->
+                val scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                    splashScreenView,
+                    PropertyValuesHolder.ofFloat("scaleX", 1.7f),
+                    PropertyValuesHolder.ofFloat("scaleY", 1.7f)
+                )
+
+                scaleDown.duration = 500
+                scaleDown.repeatCount = 3
+                scaleDown.repeatMode = ObjectAnimator.REVERSE
+                scaleDown.interpolator = AccelerateDecelerateInterpolator()
+
+                scaleDown.doOnEnd { splashScreenView.remove() }
+
+                scaleDown.start()
+            }
+        }
     }
 
     private fun setupNavigationBar() {
