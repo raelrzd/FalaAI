@@ -51,8 +51,9 @@ class AdapterHistoricChat(
                 clickChat?.let { it(modelChat) }
             }
 
-
-            title.text = modelChat.chat[0].content
+            if (modelChat.messages.isNotEmpty()) {
+                title.text = modelChat.messages[0].content
+            }
 
         }
 

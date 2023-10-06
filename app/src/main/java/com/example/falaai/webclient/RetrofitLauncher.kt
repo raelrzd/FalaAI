@@ -5,11 +5,12 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 
 class RetrofitLauncher {
 
     private val client by lazy {
-        val yourAccessToken = "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"
+        val yourAccessToken = "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"
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         OkHttpClient.Builder()
@@ -20,6 +21,8 @@ class RetrofitLauncher {
                 chain.proceed(request)
             }
             .addInterceptor(logging)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
             .build()
     }
 

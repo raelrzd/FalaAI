@@ -29,16 +29,11 @@ class HomeActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        setupAnimations()
+        setupSplashAnimation()
         setupNavigationBar()
     }
 
-    override fun onResume() {
-        super.onResume()
-        historicChatFragment.updateAdapterList()
-    }
-
-    private fun setupAnimations() {
+    private fun setupSplashAnimation() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             splashScreen.setOnExitAnimationListener { splashScreenView ->
                 val scaleDown = ObjectAnimator.ofPropertyValuesHolder(

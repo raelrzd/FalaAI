@@ -1,32 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?><!-- res/layout/message_item.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="#D3FBE8">
+    android:background="@color/backgroundDefault">
 
-    <!-- Balloon background layout for messages -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/messageReceiveAnimation"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:scaleType="centerCrop"
+        android:rotationY="180"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/hello" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/messageImageUser"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_add_photo"
+        android:layout_alignParentEnd="true"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/black" />
+
     <RelativeLayout
         android:id="@+id/messageBalloon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:layout_toEndOf="@+id/messageReceiveAnimation"
         android:background="@drawable/background_receive_message"
         android:padding="8dp"
-        android:layout_alignParentEnd="false">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/messageText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            tools:text="Hello, this is a sent message."
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="Hello, this is a sent message." />
 
     </RelativeLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/messageLoadingAnimation"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loadingmessage" />
 
 </RelativeLayout>

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.falaai.constants.Constants
 import com.example.falaai.databinding.FragmentHistoricChatBinding
+import com.example.falaai.model.ModelChat
 import com.example.falaai.storage.ChatStorage
 import com.example.falaai.ui.activity.ChatActivity
 import com.example.falaai.ui.adapter.AdapterHistoricChat
@@ -19,14 +20,27 @@ class HistoricChatFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapterHistoric: AdapterHistoricChat
+    private lateinit var historicChatList: MutableList<ModelChat>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentHistoricChatBinding.inflate(inflater, container, false)
         val view = binding.root
+        setupRecyclerView()
+        setupButtonNewChat()
 
+        return view
+    }
+
+    override fun onResume() {
+        super.onResume()
         updateAdapterList()
+    }
+
+    private fun setupRecyclerView() {
+        historicChatList = ChatStorage(requireContext()).getList()
+        adapterHistoric = AdapterHistoricChat(requireContext(), historicChatList)
         recyclerView = binding.homeRecyclerChat
         recyclerView.adapter = adapterHistoric
 
@@ -35,22 +49,19 @@ class HistoricChatFragment : Fragment() {
                 this.putExtra(Constants.KEY_OPEN_CHAT, modelChat)
             })
         }
-
-        binding.homeElevatedButton.setOnClickListener {
-            startActivity(Intent(requireActivity(), ChatActivity::class.java))
-        }
-
-        return view
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun updateAdapterList() {
+        historicChatList.clear()
+        historicChatList.addAll(ChatStorage(requireContext()).getList())
+        adapterHistoric.notifyDataSetChanged()
         checkEmptyList()
     }
 
-    fun updateAdapterList() {
-        adapterHistoric =
-            AdapterHistoricChat(requireContext(), ChatStorage(requireContext()).getList())
+    private fun setupButtonNewChat() {
+        binding.homeElevatedButton.setOnClickListener {
+            startActivity(Intent(requireActivity(), ChatActivity::class.java))
+        }
     }
 
     private fun checkEmptyList() {

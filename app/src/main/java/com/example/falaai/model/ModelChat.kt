@@ -6,5 +6,5 @@ import java.util.UUID
 data class ModelChat(
     val id: String = UUID.randomUUID().toString(),
     var title: String? = null,
-    var chat: MutableList<ModelMessage> = mutableListOf(),
+    var messages: MutableList<ModelMessage> = mutableListOf(),
 ) : Serializable

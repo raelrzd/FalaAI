@@ -30,16 +30,13 @@ class ChatStorage(context: Context) : PreferencesStorage(context = context) {
         return getList().find { it.id == modelChat.id }
     }
 
-    fun addItem(modelChat: ModelChat) {
-        val list = getList()
-        list.add(modelChat)
-        saveList(list)
-    }
-
-    fun updateItem(modelChat: ModelChat) {
+    fun saveItem(modelChat: ModelChat) {
         val list = getList()
         list.find { it.id == modelChat.id }?.let {
             list[list.indexOf(it)] = modelChat
+            saveList(list)
+        } ?: run {
+            list.add(modelChat)
             saveList(list)
         }
     }

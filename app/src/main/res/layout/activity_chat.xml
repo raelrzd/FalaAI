@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/topBar">
 
         <ImageView
             android:id="@+id/chatIconBack"
@@ -74,15 +75,16 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/chatAnimationEmptyList"
-            android:layout_width="250dp"
+            android:layout_width="350dp"
             android:layout_height="250dp"
             app:layout_constraintBottom_toTopOf="@+id/chatLabelEmptyList"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="centerCrop"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/emptylist" />
+            app:lottie_rawRes="@raw/emptychat" />
 
         <TextView
             android:id="@+id/chatLabelEmptyList"
@@ -91,7 +93,7 @@
             android:layout_margin="32dp"
             android:text="Opss! Sua conversa ainda está vazia... mande agora sua mensagem para AI."
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

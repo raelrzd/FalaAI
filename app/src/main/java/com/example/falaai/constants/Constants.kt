@@ -5,5 +5,7 @@ interface Constants {
         const val KEY_OPEN_CHAT = "openChat"
         const val KEY_USER = "user"
         const val KEY_ASSISTANT = "assistant"
+        const val KEY_LOADING_MESSAGE = "loading"
+        const val KEY_ERROR_MESSAGE = "error"
     }
 }
