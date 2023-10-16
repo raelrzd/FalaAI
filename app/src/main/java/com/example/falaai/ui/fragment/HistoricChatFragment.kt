@@ -11,6 +11,7 @@ import com.example.falaai.constants.Constants
 import com.example.falaai.databinding.FragmentHistoricChatBinding
 import com.example.falaai.model.ModelChat
 import com.example.falaai.storage.ChatStorage
+import com.example.falaai.storage.UserStorage
 import com.example.falaai.ui.activity.ChatActivity
 import com.example.falaai.ui.adapter.AdapterHistoricChat
 
@@ -33,8 +34,18 @@ class HistoricChatFragment : Fragment() {
         return view
     }
 
+    private fun checkUser() {
+        val userName = UserStorage(requireContext()).getUser()?.name
+        binding.homeLabelWelcome.text =
+            if (!userName.isNullOrBlank()) "Olá, $1! Como posso ajudar hoje?".replace(
+                "$1",
+                userName
+            ) else "Seja bem vindo! Como posso te ajudar?"
+    }
+
     override fun onResume() {
         super.onResume()
+        checkUser()
         updateAdapterList()
     }
 

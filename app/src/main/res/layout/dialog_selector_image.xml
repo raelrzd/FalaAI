@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="220dp"
+    app:cardBackgroundColor="@color/backgroundDefault"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="320dp"
+        android:layout_height="220dp">
+
+        <TextView
+            android:id="@+id/dialogLabelEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="Edite sua foto com:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dialogLayoutCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toStartOf="@+id/dialogLayoutGallery"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialogLabelEdit">
+
+            <ImageView
+                android:id="@+id/dialogImageCamera"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_camera"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Câmera"
+                app:layout_constraintEnd_toEndOf="@+id/dialogImageCamera"
+                app:layout_constraintStart_toStartOf="@+id/dialogImageCamera"
+                app:layout_constraintTop_toBottomOf="@+id/dialogImageCamera" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dialogLayoutGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/dialogLayoutNoPhoto"
+            app:layout_constraintStart_toEndOf="@+id/dialogLayoutCamera"
+            app:layout_constraintTop_toTopOf="@+id/dialogLayoutCamera">
+
+            <ImageView
+                android:id="@+id/dialogImageGallery"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_galeria"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Galeria"
+                app:layout_constraintEnd_toEndOf="@+id/dialogImageGallery"
+                app:layout_constraintStart_toStartOf="@+id/dialogImageGallery"
+                app:layout_constraintTop_toBottomOf="@+id/dialogImageGallery" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dialogLayoutNoPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/dialogLayoutGallery"
+            app:layout_constraintTop_toTopOf="@+id/dialogLayoutGallery">
+
+            <ImageView
+                android:id="@+id/dialogImageNoPhoto"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_sem_foto"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sem foto"
+                app:layout_constraintEnd_toEndOf="@+id/dialogImageNoPhoto"
+                app:layout_constraintStart_toStartOf="@+id/dialogImageNoPhoto"
+                app:layout_constraintTop_toBottomOf="@+id/dialogImageNoPhoto" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -14,6 +14,9 @@ import com.example.falaai.constants.Constants.Companion.KEY_LOADING_MESSAGE
 import com.example.falaai.constants.Constants.Companion.KEY_USER
 import com.example.falaai.databinding.ItemMessageBinding
 import com.example.falaai.model.ModelMessage
+import com.example.falaai.model.ModelUser
+import com.example.falaai.storage.UserStorage
+import com.example.falaai.utils.loadImageFromAppData
 
 class AdapterChat(
     private val context: Context,
@@ -68,6 +71,11 @@ class AdapterChat(
         private val loadingAnimation = binding.messageLoadingAnimation
         private val receiveAnimation = binding.messageReceiveAnimation
         private val imageUser = binding.messageImageUser
+        private var user: ModelUser? = null
+
+        init {
+            user = UserStorage(context).getUser()
+        }
 
 
         fun bindView(message: ModelMessage) {
@@ -114,6 +122,11 @@ class AdapterChat(
                 layoutParams.addRule(RelativeLayout.START_OF, R.id.messageImageUser)
                 layoutParams.removeRule(RelativeLayout.END_OF)
                 layoutParams.marginStart = 16
+                if (user?.photo != null) {
+                    imageUser.setImageBitmap(loadImageFromAppData(context))
+                } else {
+                    imageUser.setImageResource(R.drawable.ic_add_photo)
+                }
             } else {
                 imageUser.visibility = View.GONE
                 receiveAnimation.setAnimation(R.raw.hello)

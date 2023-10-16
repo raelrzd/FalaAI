@@ -10,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/settingsTopBar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="70dp"
         android:backgroundTint="@color/topBar"
         android:elevation="8dp"
         app:layout_constraintBottom_toTopOf="@+id/settingsImageUser"
@@ -22,8 +22,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="32dp"
+            android:layout_gravity="center"
             android:gravity="center"
             android:text="Configurações do usuário"
             android:textColor="@color/black"
@@ -33,25 +32,38 @@
 
     </androidx.cardview.widget.CardView>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/settingsImageUser"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_margin="32dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_add_photo"
-        app:civ_border_color="#195e63"
-        app:civ_border_width="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingsTopBar" />
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedTextField"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/settingsLabelPhoto"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:text="Configure sua foto"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/settingsImageUser"
+        app:layout_constraintStart_toStartOf="@+id/settingsImageUser"
+        app:layout_constraintTop_toBottomOf="@+id/settingsTopBar" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/settingsImageUser"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_photo"
+        app:civ_border_color="#195e63"
+        app:civ_border_width="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsLabelPhoto" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/settingsOutlinedTextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         app:endIconDrawable="@drawable/ic_check"
         app:endIconMode="custom"
         app:endIconTint="#10A37F"
@@ -60,13 +72,16 @@
         app:layout_constraintTop_toBottomOf="@+id/settingsImageUser">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inlinedTextField"
+            android:id="@+id/settingsInlinedTextField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Configure seu nome aqui"
+            android:maxLength="25"
             android:textSize="18sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

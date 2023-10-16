@@ -7,5 +7,6 @@ interface Constants {
         const val KEY_ASSISTANT = "assistant"
         const val KEY_LOADING_MESSAGE = "loading"
         const val KEY_ERROR_MESSAGE = "error"
+        const val KEY_PERMISSIONS_PHOTO = 1234
     }
 }

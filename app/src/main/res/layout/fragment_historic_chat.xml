@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:maxLines="2"
-                android:text="Olá, Rael! Como posso ajudar hoje?"
+                tools:text="Olá, Rael! Como posso ajudar hoje?"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="20sp"

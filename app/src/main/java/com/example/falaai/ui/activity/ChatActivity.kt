@@ -42,7 +42,7 @@ class ChatActivity : AppCompatActivity() {
         setupButtonSendMessage()
         setupButtonBack()
 
-        binding.outlinedTextField.editText?.addTextChangedListener {
+        binding.chatOutlinedTextField.editText?.addTextChangedListener {
 //            Toast.makeText(this, "texto alterado", Toast.LENGTH_SHORT).show()
         }
 
@@ -80,9 +80,9 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun setupButtonSendMessage() {
-        binding.outlinedTextField.setEndIconOnClickListener {
-            val inputText = binding.outlinedTextField.editText?.text.toString()
-            binding.outlinedTextField.editText?.setText("")
+        binding.chatOutlinedTextField.setEndIconOnClickListener {
+            val inputText = binding.chatOutlinedTextField.editText?.text.toString()
+            binding.chatOutlinedTextField.editText?.setText("")
             if (inputText.isNotBlank() && !isRunningRequest) {
                 isRunningRequest = true
                 val newMessage = ModelMessage(
