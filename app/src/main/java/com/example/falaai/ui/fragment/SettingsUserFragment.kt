@@ -1,18 +1,19 @@
 package com.example.falaai.ui.fragment
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.example.falaai.R
-import com.example.falaai.constants.Constants.Companion.KEY_PERMISSIONS_PHOTO
+import com.example.falaai.constants.EnumAction
 import com.example.falaai.databinding.FragmentSettingsUserBinding
+import com.example.falaai.model.ModelAction
 import com.example.falaai.permission.PermissionService
+import com.example.falaai.storage.ChatStorage
 import com.example.falaai.storage.UserStorage
+import com.example.falaai.ui.adapter.AdapterActions
 import com.example.falaai.ui.dialog.DialogSelectorImage
 import com.example.falaai.utils.loadImageFromAppData
 import com.example.falaai.utils.saveImageToAppData
@@ -23,6 +24,10 @@ class SettingsUserFragment : Fragment() {
     private var _binding: FragmentSettingsUserBinding? = null
     private val binding get() = _binding!!
     private lateinit var imageViewUser: CircleImageView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapterActions: AdapterActions
+    private lateinit var listModelActions: MutableList<ModelAction>
+    private val chatsFragment = HistoricChatFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +39,46 @@ class SettingsUserFragment : Fragment() {
         hasUserName()
         setupImageUser()
         setupClickEditPhoto()
+        setupActions()
         return view
+    }
+
+    private fun setupActions() {
+        recyclerView = binding.settingsRecyclerActions
+        listModelActions = mutableListOf(
+            ModelAction(
+                EnumAction.DELETE_ALL_CONVERSATIONS,
+                R.drawable.ic_delete_chats,
+                "Apagar todas as conversas"
+            ),
+            ModelAction(
+                EnumAction.DELETE_USER_DATA,
+                R.drawable.ic_delete_user,
+                "Apagar dados do usuário"
+            )
+        )
+        adapterActions = AdapterActions(requireContext(), listModelActions).apply {
+            this.setOnCLickAction { action ->
+                verifyActionSelected(action)
+            }
+        }
+        recyclerView.adapter = adapterActions
+    }
+
+    private fun verifyActionSelected(action: ModelAction) {
+        when (action.action) {
+            EnumAction.DELETE_ALL_CONVERSATIONS -> {
+                ChatStorage(requireContext()).deleteList()
+                chatsFragment.clearHistoricChat()
+            }
+
+            EnumAction.DELETE_USER_DATA -> {
+                binding.settingsOutlinedTextField.editText?.setText("")
+                imageViewUser.setImageResource(R.drawable.ic_add_photo)
+                UserStorage(requireContext()).deleteUser()
+            }
+
+        }
     }
 
     private fun setupImageUser() {
@@ -49,19 +93,8 @@ class SettingsUserFragment : Fragment() {
 
     private fun setupClickEditPhoto() {
         binding.settingsImageUser.setOnClickListener {
-            val permissionCamera = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                arrayOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.READ_MEDIA_IMAGES
-                )
-            } else {
-                arrayOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-            }
-            PermissionService(KEY_PERMISSIONS_PHOTO).verifyPermissions(this, permissionCamera)
+            if (PermissionService().allPermissionsGranted(requireContext())) openSelectorImage()
+            else PermissionService().verifyPermissions(requireActivity())
         }
     }
 
@@ -79,23 +112,7 @@ class SettingsUserFragment : Fragment() {
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            KEY_PERMISSIONS_PHOTO -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openSelectorImage()
-                }
-            }
-        }
-    }
-
-    private fun openSelectorImage() {
+    fun openSelectorImage() {
         DialogSelectorImage().apply {
             setOnClickEditImage { imageUri ->
                 UserStorage(requireContext()).editUserPhoto(imageUri)

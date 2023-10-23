@@ -35,6 +35,11 @@ class AdapterHistoricChat(
         this.clickChat = clickChat
     }
 
+    fun clear() {
+        chatList.clear()
+        notifyDataSetChanged()
+    }
+
 
     inner class ViewHolder(
         private val context: Context,

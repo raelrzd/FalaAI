@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 class RetrofitLauncher {
 
     private val client by lazy {
-        val yourAccessToken = "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"
+        val yourAccessToken = "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"
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         OkHttpClient.Builder()
@@ -29,6 +29,6 @@ class RetrofitLauncher {
     private val retrofit = Retrofit.Builder().baseUrl("https://api.openai.com/v1/chat/")
         .addConverterFactory(MoshiConverterFactory.create()).client(client).build()
 
-    val chatService = retrofit.create(ChatService::class.java)
+    val chatService: ChatService = retrofit.create(ChatService::class.java)
 
 }

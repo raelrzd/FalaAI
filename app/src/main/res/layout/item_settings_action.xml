@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:minHeight="48dp">
+
+    <ImageView
+        android:id="@+id/ItemActionImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_delete_chats" />
+
+    <TextView
+        android:id="@+id/itemActionDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/ItemActionImage"
+        app:layout_constraintEnd_toStartOf="@id/ItemActionImageNext"
+        app:layout_constraintStart_toEndOf="@id/ItemActionImage"
+        app:layout_constraintTop_toTopOf="@id/ItemActionImage"
+        tools:text="Apagar todas as conversas" />
+
+    <ImageView
+        android:id="@+id/ItemActionImageNext"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="8dp"
+        android:rotationY="180"
+        android:src="@drawable/ic_back"
+        app:layout_constraintBottom_toBottomOf="@id/ItemActionImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ItemActionImage" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

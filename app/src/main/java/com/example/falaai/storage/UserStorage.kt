@@ -17,6 +17,10 @@ class UserStorage(context: Context) : PreferencesStorage(context = context) {
         editor.commit()
     }
 
+    fun deleteUser() {
+        getEditor().remove(keyUser).apply()
+    }
+
     fun getUser(): ModelUser? {
         val jsonModelContact = getPreferences().getString(keyUser, "{}")
         return Gson().fromJson(jsonModelContact, object : TypeToken<ModelUser>() {}.type)

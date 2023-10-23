@@ -4,13 +4,16 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import com.example.falaai.R
+import com.example.falaai.constants.Constants
 import com.example.falaai.databinding.ActivityHomeBinding
+import com.example.falaai.permission.PermissionService
 import com.example.falaai.ui.fragment.HistoricChatFragment
 import com.example.falaai.ui.fragment.SettingsUserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -80,6 +83,21 @@ class HomeActivity : AppCompatActivity() {
 
     private fun openFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.homeContainer, fragment).commit()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            Constants.REQUEST_CODE_PERMISSIONS -> {
+                if (PermissionService().allPermissionsGranted(applicationContext)) {
+                    settingsUserFragment.openSelectorImage()
+                }
+            }
+        }
     }
 
 }

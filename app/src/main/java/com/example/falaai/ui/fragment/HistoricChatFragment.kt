@@ -34,6 +34,12 @@ class HistoricChatFragment : Fragment() {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkUser()
+        updateAdapterList()
+    }
+
     private fun checkUser() {
         val userName = UserStorage(requireContext()).getUser()?.name
         binding.homeLabelWelcome.text =
@@ -41,12 +47,6 @@ class HistoricChatFragment : Fragment() {
                 "$1",
                 userName
             ) else "Seja bem vindo! Como posso te ajudar?"
-    }
-
-    override fun onResume() {
-        super.onResume()
-        checkUser()
-        updateAdapterList()
     }
 
     private fun setupRecyclerView() {
@@ -84,4 +84,12 @@ class HistoricChatFragment : Fragment() {
             binding.homeRecyclerChat.visibility = View.VISIBLE
         }
     }
+
+    fun clearHistoricChat() {
+        if (::adapterHistoric.isInitialized) {
+            adapterHistoric.clear()
+            historicChatList.clear()
+        }
+    }
+
 }
