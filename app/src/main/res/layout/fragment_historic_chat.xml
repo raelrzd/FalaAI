@@ -68,7 +68,7 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/homeAnimationEmptyList"
-            android:layout_width="250dp"
+            android:layout_width="350dp"
             android:layout_height="250dp"
             app:layout_constraintBottom_toTopOf="@+id/homeLabelEmptyList"
             app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +76,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/emptylist" />
+            app:lottie_rawRes="@raw/emptyhistoric" />
 
         <TextView
             android:id="@+id/homeLabelEmptyList"
@@ -114,9 +114,10 @@
         android:layout_margin="8dp"
         android:backgroundTint="@color/topBar"
         android:text="Nova conversa"
+        android:textAlignment="center"
         android:textSize="18sp"
         app:icon="@drawable/ic_add_chat"
-        app:iconSize="32dp"
+        app:iconSize="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

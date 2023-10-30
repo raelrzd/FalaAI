@@ -11,6 +11,7 @@ import com.example.falaai.constants.Constants.Companion.KEY_ERROR_MESSAGE
 import com.example.falaai.constants.Constants.Companion.KEY_OPEN_CHAT
 import com.example.falaai.constants.Constants.Companion.KEY_USER
 import com.example.falaai.databinding.ActivityChatBinding
+import com.example.falaai.extension.getTitle
 import com.example.falaai.model.ModelChat
 import com.example.falaai.model.ModelMessage
 import com.example.falaai.storage.ChatStorage
@@ -65,6 +66,7 @@ class ChatActivity : AppCompatActivity() {
                 val modelChat = intent.getSerializableExtra(KEY_OPEN_CHAT) as? ModelChat
                 if (modelChat != null) {
                     chat = modelChat
+                    chat.getTitle()?.let { binding.chatLabelTitle.text = it }
                 } else {
                     checkEmptyList()
                     // Trate o caso em que o objeto é nulo

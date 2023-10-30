@@ -8,7 +8,4 @@
     <color name="colorBackgroundPhoto">#000</color>
     <color name="colorHeaderPhoto">#4000</color>
     <color name="colorViewPhoto">#9000</color>
-    <color name="colorRemoveImage">#F85E67</color>
-    <color name="colorGallery">#7e57c2</color>
-    <color name="colorCamera">#11A4E2</color>
 </resources>

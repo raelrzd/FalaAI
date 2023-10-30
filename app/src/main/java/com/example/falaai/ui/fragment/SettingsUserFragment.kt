@@ -15,6 +15,7 @@ import com.example.falaai.storage.ChatStorage
 import com.example.falaai.storage.UserStorage
 import com.example.falaai.ui.adapter.AdapterActions
 import com.example.falaai.ui.dialog.DialogSelectorImage
+import com.example.falaai.ui.dialog.DialogValidation
 import com.example.falaai.utils.loadImageFromAppData
 import com.example.falaai.utils.saveImageToAppData
 import de.hdodenhof.circleimageview.CircleImageView
@@ -59,7 +60,12 @@ class SettingsUserFragment : Fragment() {
         )
         adapterActions = AdapterActions(requireContext(), listModelActions).apply {
             this.setOnCLickAction { action ->
-                verifyActionSelected(action)
+                DialogValidation(requireContext(), action).apply {
+                    setOnClickConfirm {
+                        verifyActionSelected(action)
+                    }
+                    show()
+                }
             }
         }
         recyclerView.adapter = adapterActions
