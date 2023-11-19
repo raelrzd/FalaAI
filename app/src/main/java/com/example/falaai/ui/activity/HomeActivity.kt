@@ -4,15 +4,15 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import com.example.falaai.R
-import com.example.falaai.constants.Constants
+import com.example.falaai.constant.Constants
 import com.example.falaai.databinding.ActivityHomeBinding
+import com.example.falaai.extension.setStatusBarTransparent
 import com.example.falaai.permission.PermissionService
 import com.example.falaai.ui.fragment.HistoricChatFragment
 import com.example.falaai.ui.fragment.SettingsUserFragment
@@ -30,8 +30,9 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         val view = binding.root
-        setContentView(view)
+        setStatusBarTransparent()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setContentView(view)
         setupSplashAnimation()
         setupNavigationBar()
     }

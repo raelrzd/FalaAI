@@ -1,17 +1,25 @@
 package com.example.falaai.ui.activity
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
-import com.example.falaai.constants.Constants.Companion.KEY_ASSISTANT
-import com.example.falaai.constants.Constants.Companion.KEY_ERROR_MESSAGE
-import com.example.falaai.constants.Constants.Companion.KEY_OPEN_CHAT
-import com.example.falaai.constants.Constants.Companion.KEY_USER
+import com.example.falaai.R
+import com.example.falaai.constant.Constants.Companion.KEY_ASSISTANT
+import com.example.falaai.constant.Constants.Companion.KEY_ERROR_MESSAGE
+import com.example.falaai.constant.Constants.Companion.KEY_OPEN_CHAT
+import com.example.falaai.constant.Constants.Companion.KEY_USER
+import com.example.falaai.constant.EnumAlertType
 import com.example.falaai.databinding.ActivityChatBinding
 import com.example.falaai.extension.getTitle
+import com.example.falaai.extension.setStatusBarTransparent
+import com.example.falaai.extension.showMessage
 import com.example.falaai.model.ModelChat
 import com.example.falaai.model.ModelMessage
 import com.example.falaai.storage.ChatStorage
@@ -19,6 +27,7 @@ import com.example.falaai.ui.adapter.AdapterChat
 import com.example.falaai.webclient.RetrofitLauncher
 import com.example.falaai.webclient.model.ChatRequest
 import com.example.falaai.webclient.model.ChatResponse
+import com.google.android.material.textfield.TextInputEditText
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,15 +46,13 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         val view = binding.root
+        setStatusBarTransparent()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setContentView(view)
         setupIntent()
         setupRecyclerView()
         setupButtonSendMessage()
         setupButtonBack()
-
-        binding.chatOutlinedTextField.editText?.addTextChangedListener {
-//            Toast.makeText(this, "texto alterado", Toast.LENGTH_SHORT).show()
-        }
 
     }
 
@@ -84,17 +91,35 @@ class ChatActivity : AppCompatActivity() {
     private fun setupButtonSendMessage() {
         binding.chatOutlinedTextField.setEndIconOnClickListener {
             val inputText = binding.chatOutlinedTextField.editText?.text.toString()
+            hideKeyboard()
             binding.chatOutlinedTextField.editText?.setText("")
-            if (inputText.isNotBlank() && !isRunningRequest) {
-                isRunningRequest = true
-                val newMessage = ModelMessage(
-                    role = KEY_USER, content = inputText
-                )
-                sendNewMessage(newMessage)
-                checkEmptyList()
+            if (isNetworkConnected()) {
+                if (inputText.isNotBlank() && !isRunningRequest) {
+                    isRunningRequest = true
+                    val newMessage = ModelMessage(
+                        role = KEY_USER, content = inputText
+                    )
+                    sendNewMessage(newMessage)
+                    checkEmptyList()
+                }
+                recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+            } else {
+                this.showMessage("Sem conexão!", EnumAlertType.NO_CONNECTION)
             }
-            recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
         }
+    }
+
+    private fun isNetworkConnected(): Boolean {
+        val connectivityManager =
+            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        return activeNetwork?.isConnectedOrConnecting == true
+    }
+
+    private fun hideKeyboard() {
+        val editText = binding.chatInlinedTextField
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 
     private fun sendNewMessage(newMessage: ModelMessage) {

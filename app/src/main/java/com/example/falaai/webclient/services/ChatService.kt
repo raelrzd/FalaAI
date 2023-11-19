@@ -3,7 +3,6 @@ import com.example.falaai.webclient.model.ChatRequest
 import com.example.falaai.webclient.model.ChatResponse
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface ChatService {

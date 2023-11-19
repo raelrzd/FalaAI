@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/snackBarRoot"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/heightTopSnackBar"
+    android:orientation="vertical"
+    tools:background="@color/colorAlertSuccess">
+
+    <ImageView
+        android:id="@+id/snackBarIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="18dp"
+        app:layout_constraintBottom_toBottomOf="@id/snackBarTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/snackBarTitle"
+        tools:srcCompat="@drawable/ic_success" />
+
+    <TextView
+        android:id="@+id/snackBarTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="#61587E"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/snackBarButtonClose"
+        app:layout_constraintStart_toEndOf="@id/snackBarIcon"
+        tools:text="Tarefa feita com sucesso"
+        android:textSize="16sp"/>
+
+    <ImageView
+        android:id="@+id/snackBarButtonClose"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:paddingHorizontal="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_clear" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

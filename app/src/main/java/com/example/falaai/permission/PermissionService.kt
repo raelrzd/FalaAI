@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.falaai.constants.Constants.Companion.REQUEST_CODE_PERMISSIONS
-import com.example.falaai.constants.Constants.Companion.REQUIRED_PERMISSIONS
+import com.example.falaai.constant.Constants.Companion.REQUEST_CODE_PERMISSIONS
+import com.example.falaai.constant.Constants.Companion.REQUIRED_PERMISSIONS
 
 class PermissionService {
     fun verifyPermissions(activity: Activity) {

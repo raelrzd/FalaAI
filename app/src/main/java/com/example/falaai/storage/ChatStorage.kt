@@ -41,9 +41,11 @@ class ChatStorage(context: Context) : PreferencesStorage(context = context) {
         }
     }
 
-    fun removeItem(position: Int) {
+    fun removeItem(modelChat: ModelChat) {
         val list = getList()
-        list.removeAt(position)
-        saveList(list)
+        list.find { it.id == modelChat.id }?.let {
+            list.remove(it)
+            saveList(list)
+        }
     }
 }

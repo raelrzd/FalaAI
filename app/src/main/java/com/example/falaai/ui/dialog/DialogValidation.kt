@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.Window
-import com.example.falaai.constants.EnumAction
 import com.example.falaai.databinding.DialogValidationBinding
 import com.example.falaai.model.ModelAction
 
@@ -35,17 +34,8 @@ class DialogValidation(context: Context, private val action: ModelAction) : Dial
     }
 
     private fun setupIconAndTitle() {
-        when(action.action) {
-            EnumAction.DELETE_ALL_CONVERSATIONS -> {
-                binding.dialogValidationIcon.setImageResource(action.icon)
-                binding.dialogValidationTitle.text = "Tem certeza que deseja apagar todas as conversas com IA?"
-            }
-
-            EnumAction.DELETE_USER_DATA -> {
-                binding.dialogValidationIcon.setImageResource(action.icon)
-                binding.dialogValidationTitle.text = "Tem certeza que deseja apagar os dados do usuário?"
-            }
-        }
+        binding.dialogValidationIcon.setImageResource(action.icon)
+        binding.dialogValidationTitle.text = action.description
     }
 
     private fun setupButtonConfirm() {

@@ -5,15 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.falaai.constants.Constants
+import com.example.falaai.R
+import com.example.falaai.constant.Constants
+import com.example.falaai.constant.EnumAction
+import com.example.falaai.constant.EnumAlertType
 import com.example.falaai.databinding.FragmentHistoricChatBinding
+import com.example.falaai.extension.showMessage
+import com.example.falaai.model.ModelAction
 import com.example.falaai.model.ModelChat
 import com.example.falaai.storage.ChatStorage
 import com.example.falaai.storage.UserStorage
 import com.example.falaai.ui.activity.ChatActivity
 import com.example.falaai.ui.adapter.AdapterHistoricChat
+import com.example.falaai.ui.dialog.DialogValidation
 
 class HistoricChatFragment : Fragment() {
 
@@ -55,11 +62,39 @@ class HistoricChatFragment : Fragment() {
         recyclerView = binding.homeRecyclerChat
         recyclerView.adapter = adapterHistoric
 
-        adapterHistoric.setOnClickChat { modelChat ->
-            startActivity(Intent(requireActivity(), ChatActivity::class.java).apply {
-                this.putExtra(Constants.KEY_OPEN_CHAT, modelChat)
-            })
+        adapterHistoric.apply {
+            setOnClickChat { modelChat ->
+                startActivity(Intent(requireActivity(), ChatActivity::class.java).apply {
+                    this.putExtra(Constants.KEY_OPEN_CHAT, modelChat)
+                })
+            }
+            setOnLongClickChat { modelChat ->
+                val action = ModelAction(
+                    action = EnumAction.DELETE_CHAT,
+                    icon = R.drawable.ic_delete_chats,
+                    title = "Apagar conversa",
+                    description = "Tem certeza que deseja remover esta conversa?"
+                )
+                DialogValidation(requireContext(), action).apply {
+                    setOnClickConfirm {
+                        removeItemChat(modelChat)
+                    }
+                    show()
+                }
+
+            }
         }
+
+    }
+
+    private fun removeItemChat(modelChat: ModelChat) {
+        ChatStorage(requireContext()).removeItem(modelChat)
+        val index = historicChatList.indexOf(modelChat)
+        historicChatList.remove(modelChat)
+        adapterHistoric.notifyItemRemoved(index)
+        checkEmptyList()
+        val appCompatActivity = requireActivity() as AppCompatActivity
+        appCompatActivity.showMessage("Conversa removida com sucesso!", EnumAlertType.SUCCESS)
     }
 
     private fun updateAdapterList() {

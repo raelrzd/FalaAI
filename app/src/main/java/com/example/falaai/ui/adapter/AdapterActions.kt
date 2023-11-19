@@ -44,7 +44,7 @@ open class AdapterActions(
                 itemView.setOnClickListener { it(action) }
             }
             icon.setImageResource(action.icon)
-            description.text = action.description
+            description.text = action.title
         }
     }
 }

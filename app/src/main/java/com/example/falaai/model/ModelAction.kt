@@ -1,9 +1,10 @@
 package com.example.falaai.model
 
-import com.example.falaai.constants.EnumAction
+import com.example.falaai.constant.EnumAction
 
 class ModelAction(
     val action: EnumAction,
     val icon: Int,
-    val description: String,
+    val title: String,
+    val description: String
 )

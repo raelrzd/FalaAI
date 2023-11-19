@@ -8,10 +8,10 @@ import android.widget.RelativeLayout
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.falaai.R
-import com.example.falaai.constants.Constants.Companion.KEY_ASSISTANT
-import com.example.falaai.constants.Constants.Companion.KEY_ERROR_MESSAGE
-import com.example.falaai.constants.Constants.Companion.KEY_LOADING_MESSAGE
-import com.example.falaai.constants.Constants.Companion.KEY_USER
+import com.example.falaai.constant.Constants.Companion.KEY_ASSISTANT
+import com.example.falaai.constant.Constants.Companion.KEY_ERROR_MESSAGE
+import com.example.falaai.constant.Constants.Companion.KEY_LOADING_MESSAGE
+import com.example.falaai.constant.Constants.Companion.KEY_USER
 import com.example.falaai.databinding.ItemMessageBinding
 import com.example.falaai.model.ModelMessage
 import com.example.falaai.model.ModelUser

@@ -8,4 +8,13 @@
     <color name="colorBackgroundPhoto">#000</color>
     <color name="colorHeaderPhoto">#4000</color>
     <color name="colorViewPhoto">#9000</color>
+    <color name="colorAlertError">#FDE2E2</color>
+    <color name="colorAlertSuccess">#D0F0E7</color>
+    <color name="colorAlertNoConnection">#FDF0D9</color>
+    <color name="colorAlertErrorDark">#F46C6C</color>
+    <color name="colorAlertSuccessDark">#12B285</color>
+    <color name="colorAlertNoConnectionDark">#F7B440</color>
+    <color name="colorAlertWarning">#FFF7DA</color>
+    <color name="colorAlertWarningDark">#9E5D28</color>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.example.falaai.constants
+package com.example.falaai.constant
 
 import android.Manifest
 import android.os.Build
