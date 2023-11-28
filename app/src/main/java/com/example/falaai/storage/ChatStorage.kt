@@ -26,10 +26,6 @@ class ChatStorage(context: Context) : PreferencesStorage(context = context) {
         getEditor().remove(keyChatList).commit()
     }
 
-    fun getItem(modelChat: ModelChat): ModelChat? {
-        return getList().find { it.id == modelChat.id }
-    }
-
     fun saveItem(modelChat: ModelChat) {
         val list = getList()
         list.find { it.id == modelChat.id }?.let {

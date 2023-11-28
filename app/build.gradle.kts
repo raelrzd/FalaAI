@@ -51,8 +51,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("androidx.recyclerview:recyclerview:1.3.1")
     implementation ("com.google.code.gson:gson:2.8.9")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-alpha02")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
     implementation ("io.coil-kt:coil:2.2.2")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
