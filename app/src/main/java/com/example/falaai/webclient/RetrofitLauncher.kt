@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 class RetrofitLauncher {
 
     private val client by lazy {
-        val yourAccessToken = "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"
+        val yourAccessToken = "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"
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         OkHttpClient.Builder()
